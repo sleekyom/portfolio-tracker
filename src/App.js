@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import PortfolioTracker from './components/PortfolioTracker';
 import './App.css';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    // Simulate a loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className='title'>Crypto Portfolio Tracker(Top 20 by Market Cap)</h1>
+      {isLoading ? (
+        <div className="spinner">Loading...</div>
+      ) : (
+        <PortfolioTracker />
+      )}
+      <footer className='footer'>
+        <p>&copy; {currentYear} Your Company Name. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
