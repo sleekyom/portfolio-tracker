@@ -5,6 +5,7 @@ import CryptoCard from './CryptoCard';
 const PortfolioTracker = () => {
   const [cryptoData, setCryptoData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchCryptoData = async () => {
@@ -29,15 +30,27 @@ const PortfolioTracker = () => {
     fetchCryptoData();
   }, []);
 
+  const filteredData = cryptoData.filter(crypto =>
+    crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) {
     return <p>Loading...</p>;
   }
 
   return (
     <div className='container'>
-      {cryptoData.map(crypto => (
-        <CryptoCard key={crypto.id} crypto={crypto} />
-      ))}
+      <input
+        type="text"
+        placeholder="Search cryptocurrency..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <div>
+        {filteredData.map(crypto => (
+          <CryptoCard key={crypto.id} crypto={crypto} />
+        ))}</div>
     </div>
   );
 };
